@@ -31,9 +31,13 @@ class User
     #[ORM\OneToOne(mappedBy: 'owner', targetEntity: DriverLicence::class, cascade: ['persist', 'remove'])]
     private $driverLicence;
 
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: UserAddress::class)]
+    private $userAddresses;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
+        $this->userAddresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,6 +124,36 @@ class User
         }
 
         $this->driverLicence = $driverLicence;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserAddress>
+     */
+    public function getUserAddresses(): Collection
+    {
+        return $this->userAddresses;
+    }
+
+    public function addUserAddresses(UserAddress $userAddresses): self
+    {
+        if (!$this->userAddresses->contains($userAddresses)) {
+            $this->userAddresses[] = $userAddresses;
+            $userAddresses->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserAddresses(UserAddress $userAddresses): self
+    {
+        if ($this->userAddresses->removeElement($userAddresses)) {
+            // set the owning side to null (unless already changed)
+            if ($userAddresses->getCustomer() === $this) {
+                $userAddresses->setCustomer(null);
+            }
+        }
 
         return $this;
     }
