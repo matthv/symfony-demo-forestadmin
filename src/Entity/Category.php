@@ -18,7 +18,7 @@ class Category
     #[ORM\Column(type: 'string', length: 50)]
     private $label;
 
-    #[ORM\OneToMany(mappedBy: 'Category', targetEntity: Car::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Car::class, orphanRemoval: true)]
     private $cars;
 
     public function __construct()
