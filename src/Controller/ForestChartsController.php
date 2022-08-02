@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Car;
+use App\Entity\Product;
 use App\Entity\User;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\LineChart;
+use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\ObjectiveChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\PercentageChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\PieChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\ValueChart;
@@ -74,5 +76,21 @@ class ForestChartsController extends ForestController
 
 
         return new JsonResponse($this->forestAgent->renderChart(new PercentageChart($totalCustomers)));
+    }
+
+    #[Route(self::ROUTE_CHARTS_PREFIX . '/objective-chart', name: 'objectiveChart', methods: ['POST'])]
+    public function objectiveChart()
+    {
+        $entityManager = $this->doctrine->getManager();
+        $priceMax = $entityManager
+            ->getRepository(Product::class)
+            ->createQueryBuilder('p')
+            ->select('MAX(p.price) as value')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $objective = 1000;
+
+        return new JsonResponse($this->forestAgent->renderChart(new ObjectiveChart($priceMax, $objective)));
     }
 }
