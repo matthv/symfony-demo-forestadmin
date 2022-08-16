@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Car;
 use App\Entity\Product;
 use App\Entity\User;
+use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\LeaderboardChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\LineChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\ObjectiveChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\PercentageChart;
@@ -92,5 +93,21 @@ class ForestChartsController extends ForestController
         $objective = 1000;
 
         return new JsonResponse($this->forestAgent->renderChart(new ObjectiveChart($priceMax, $objective)));
+    }
+
+    #[Route(self::ROUTE_CHARTS_PREFIX . '/leaderboard-chart', name: 'leaderboardChart', methods: ['POST'])]
+    public function leaderboardChart()
+    {
+        $entityManager = $this->doctrine->getManager();
+        $nbChecksPerCar = $entityManager
+            ->getRepository(Car::class)
+            ->createQueryBuilder('c')
+            ->select('c.reference as key, count(ch.id) as value')
+            ->join('c.checks', 'ch')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+
+        return new JsonResponse($this->forestAgent->renderChart(new LeaderboardChart($nbChecksPerCar)));
     }
 }
