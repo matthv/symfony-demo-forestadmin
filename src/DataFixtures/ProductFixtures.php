@@ -17,6 +17,7 @@ class ProductFixtures extends Fixture
             $product = new Product();
             $product->setName($faker->word());
             $product->setPrice($faker->numberBetween(10, 1000));
+            $product->setDate($faker->dateTimeBetween('-2 years'));
             $manager->persist($product);
         }
 
