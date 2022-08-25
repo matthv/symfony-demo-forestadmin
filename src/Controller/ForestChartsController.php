@@ -10,6 +10,7 @@ use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\LineChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\ObjectiveChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\PercentageChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\PieChart;
+use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\SmartChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\ValueChart;
 use Nicolas\SymfonyForestAdmin\Controller\ForestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -109,5 +110,21 @@ class ForestChartsController extends ForestController
             ->getResult();
 
         return new JsonResponse($this->forestAgent->renderChart(new LeaderboardChart($nbChecksPerCar)));
+    }
+
+    #[Route(self::ROUTE_CHARTS_PREFIX . '/smart-chart', name: 'smartChart', methods: ['GET'])]
+    public function smartChart()
+    {
+        $entityManager = $this->doctrine->getManager();
+        $maxNbSeatsPerBrand = $entityManager
+            ->getRepository(Car::class)
+            ->createQueryBuilder('c')
+            ->select('c.brand, max(c.nbSeats)')
+            ->groupBy('c.brand')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+
+        return new JsonResponse($this->forestAgent->renderChart(new SmartChart($maxNbSeatsPerBrand)));
     }
 }
