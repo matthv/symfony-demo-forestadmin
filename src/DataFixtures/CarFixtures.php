@@ -16,6 +16,7 @@ class CarFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create();
 
+        $checkRef = 1;
         for ($i = 1; $i <= 50; $i++) {
             $car = new Car();
             $car->setReference($faker->word());
@@ -29,7 +30,8 @@ class CarFixtures extends Fixture implements DependentFixtureInterface
             $car->setCategory($this->getReference(CategoryFixtures::CATEGORY_REFERENCE . $faker->numberBetween(1, 10)));
 
             for ($n = 1; $n <= 3; $n++) {
-                $car->addCheck($this->getReference(CheckFixtures::CHECK_REFERENCE . $n));
+                $car->addCheck($this->getReference(CheckFixtures::CHECK_REFERENCE . $checkRef));
+                $checkRef++;
             }
 
             $manager->persist($car);
