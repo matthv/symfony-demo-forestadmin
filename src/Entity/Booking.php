@@ -24,7 +24,7 @@ class Booking
     private $customer;
 
     #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'bookings')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $car;
 
     public function getId(): ?int
