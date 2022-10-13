@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "147046cadc0ea13687d4df25b28dfda3",
+    "content-hash": "d926c3532d90b7dde5fc67cef200a581",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2250,7 +2250,7 @@
             "version": "dev-feat/ipwhitelist-support",
             "dist": {
                 "type": "path",
-                "url": "/Users/matthieuvideaud/Sites/agents/in-app/agent-php",
+                "url": "/Users/nicolas/sites/agents/in-app/agent-php",
                 "reference": "03db4e4f8238f514e5ebcd3ffe4df40c371c26a2"
             },
             "require": {
@@ -3730,8 +3730,8 @@
             "version": "0.0.1",
             "dist": {
                 "type": "path",
-                "url": "/Users/matthieuvideaud/Sites/agents/in-app/nico-bundle",
-                "reference": "5b346a7878639e9d22cea2a3ef06775451f2f12a"
+                "url": "/Users/nicolas/sites/agents/in-app/symfony-forestadmin",
+                "reference": "8ae6b7f1c88079144b1f135b3b685aa93b37018c"
             },
             "require": {
                 "asm89/stack-cors": "^2.1",
@@ -11271,5 +11271,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }

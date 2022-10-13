@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Car;
 use App\Entity\Product;
 use App\Entity\User;
+use ForestAdmin\AgentPHP\Agent\Facades\JsonApi;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\LeaderboardChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\LineChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\ObjectiveChart;
@@ -29,7 +30,7 @@ class ForestChartsController extends ForestController
             ->getQuery()
             ->getSingleScalarResult();
 
-        return new JsonResponse($this->forestAgent->renderChart(new ValueChart($totalCars)));
+        return new JsonResponse(JsonApi::renderChart(new ValueChart($totalCars)));
     }
 
     #[Route(self::ROUTE_CHARTS_PREFIX . '/pie-chart', name: 'pieChart', methods: ['POST'])]
@@ -45,7 +46,7 @@ class ForestChartsController extends ForestController
             ->getResult();
 
 
-        return new JsonResponse($this->forestAgent->renderChart(new PieChart($nbCarsPerYear)));
+        return new JsonResponse(JsonApi::renderChart(new PieChart($nbCarsPerYear)));
     }
 
     #[Route(self::ROUTE_CHARTS_PREFIX . '/line-chart', name: 'lineChart', methods: ['POST'])]
@@ -62,7 +63,7 @@ class ForestChartsController extends ForestController
             ->getResult();
 
 
-        return new JsonResponse($this->forestAgent->renderChart(new LineChart($avgSeatPerCategory)));
+        return new JsonResponse(JsonApi::renderChart(new LineChart($avgSeatPerCategory)));
     }
 
     #[Route(self::ROUTE_CHARTS_PREFIX . '/percentage-chart', name: 'percentageChart', methods: ['POST'])]
@@ -77,7 +78,7 @@ class ForestChartsController extends ForestController
                 ->getSingleScalarResult();
 
 
-        return new JsonResponse($this->forestAgent->renderChart(new PercentageChart($totalCustomers)));
+        return new JsonResponse(JsonApi::renderChart(new PercentageChart($totalCustomers)));
     }
 
     #[Route(self::ROUTE_CHARTS_PREFIX . '/objective-chart', name: 'objectiveChart', methods: ['POST'])]
@@ -93,7 +94,7 @@ class ForestChartsController extends ForestController
 
         $objective = 1000;
 
-        return new JsonResponse($this->forestAgent->renderChart(new ObjectiveChart($priceMax, $objective)));
+        return new JsonResponse(JsonApi::renderChart(new ObjectiveChart($priceMax, $objective)));
     }
 
     #[Route(self::ROUTE_CHARTS_PREFIX . '/leaderboard-chart', name: 'leaderboardChart', methods: ['POST'])]
@@ -109,7 +110,7 @@ class ForestChartsController extends ForestController
             ->getQuery()
             ->getResult();
 
-        return new JsonResponse($this->forestAgent->renderChart(new LeaderboardChart($nbChecksPerCar)));
+        return new JsonResponse(JsonApi::renderChart(new LeaderboardChart($nbChecksPerCar)));
     }
 
     #[Route(self::ROUTE_CHARTS_PREFIX . '/smart-chart', name: 'smartChart', methods: ['GET'])]
@@ -125,6 +126,6 @@ class ForestChartsController extends ForestController
             ->getQuery()
             ->getResult();
 
-        return new JsonResponse($this->forestAgent->renderChart(new SmartChart($maxNbSeatsPerBrand)));
+        return new JsonResponse(JsonApi::renderChart(new SmartChart($maxNbSeatsPerBrand)));
     }
 }

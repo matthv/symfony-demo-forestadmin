@@ -6,11 +6,11 @@
     "repositories": [
         {
             "type": "path",
-            "url": "/Users/matthieuvideaud/Sites/agents/in-app/nico-bundle"
+            "url": "/Users/nicolas/sites/agents/in-app/symfony-forestadmin"
         },
         {
             "type": "path",
-            "url": "/Users/matthieuvideaud/Sites/agents/in-app/agent-php"
+            "url": "/Users/nicolas/sites/agents/in-app/agent-php"
         }
     ],
     "require": {
