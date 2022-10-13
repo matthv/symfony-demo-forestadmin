@@ -22,7 +22,7 @@ class ForestChartsController extends ForestController
     #[Route(self::ROUTE_CHARTS_PREFIX . '/value-chart', name: 'valueChart', methods: ['POST'])]
     public function valueChart()
     {
-        $entityManager = $this->doctrine->getManager();
+        $entityManager = $this->forestAgent->getEntityManager();
         $totalCars = $entityManager
             ->getRepository(Car::class)
             ->createQueryBuilder('c')
@@ -36,7 +36,7 @@ class ForestChartsController extends ForestController
     #[Route(self::ROUTE_CHARTS_PREFIX . '/pie-chart', name: 'pieChart', methods: ['POST'])]
     public function pieChart()
     {
-        $entityManager = $this->doctrine->getManager();
+        $entityManager = $this->forestAgent->getEntityManager();
         $nbCarsPerYear = $entityManager
             ->getRepository(Car::class)
             ->createQueryBuilder('c')
@@ -52,7 +52,7 @@ class ForestChartsController extends ForestController
     #[Route(self::ROUTE_CHARTS_PREFIX . '/line-chart', name: 'lineChart', methods: ['POST'])]
     public function lineChart()
     {
-        $entityManager = $this->doctrine->getManager();
+        $entityManager = $this->forestAgent->getEntityManager();
         $avgSeatPerCategory = $entityManager
             ->getRepository(Car::class)
             ->createQueryBuilder('c')
@@ -69,7 +69,7 @@ class ForestChartsController extends ForestController
     #[Route(self::ROUTE_CHARTS_PREFIX . '/percentage-chart', name: 'percentageChart', methods: ['POST'])]
     public function percentageChart()
     {
-        $entityManager = $this->doctrine->getManager();
+        $entityManager = $this->forestAgent->getEntityManager();;
         $totalCustomers = $entityManager
                 ->getRepository(User::class)
                 ->createQueryBuilder('u')
@@ -84,7 +84,7 @@ class ForestChartsController extends ForestController
     #[Route(self::ROUTE_CHARTS_PREFIX . '/objective-chart', name: 'objectiveChart', methods: ['POST'])]
     public function objectiveChart()
     {
-        $entityManager = $this->doctrine->getManager();
+        $entityManager = $this->forestAgent->getEntityManager();
         $priceMax = $entityManager
             ->getRepository(Product::class)
             ->createQueryBuilder('p')
@@ -100,7 +100,7 @@ class ForestChartsController extends ForestController
     #[Route(self::ROUTE_CHARTS_PREFIX . '/leaderboard-chart', name: 'leaderboardChart', methods: ['POST'])]
     public function leaderboardChart()
     {
-        $entityManager = $this->doctrine->getManager();
+        $entityManager = $this->forestAgent->getEntityManager();
         $nbChecksPerCar = $entityManager
             ->getRepository(Car::class)
             ->createQueryBuilder('c')
@@ -116,7 +116,7 @@ class ForestChartsController extends ForestController
     #[Route(self::ROUTE_CHARTS_PREFIX . '/smart-chart', name: 'smartChart', methods: ['GET'])]
     public function smartChart()
     {
-        $entityManager = $this->doctrine->getManager();
+        $entityManager = $this->forestAgent->getEntityManager();
         $maxNbSeatsPerBrand = $entityManager
             ->getRepository(Car::class)
             ->createQueryBuilder('c')
