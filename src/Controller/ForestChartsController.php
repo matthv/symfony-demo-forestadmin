@@ -13,7 +13,7 @@ use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\PercentageChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\PieChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\SmartChart;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Charts\ValueChart;
-use Nicolas\SymfonyForestAdmin\Controller\ForestController;
+use ForestAdmin\SymfonyForestAdmin\Controller\ForestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
