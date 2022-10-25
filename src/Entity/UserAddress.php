@@ -8,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: UserAddressRepository::class)]
 class UserAddress
 {
-    #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'keyName')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userAddresses')]
     private $customer;
 
     #[ORM\Id]
@@ -22,6 +21,7 @@ class UserAddress
     #[ORM\Column(type: 'string', length: 10)]
     private $postalCode;
 
+    #[ORM\Id]
     #[ORM\Column(type: 'string', length: 100)]
     private $city;
 
