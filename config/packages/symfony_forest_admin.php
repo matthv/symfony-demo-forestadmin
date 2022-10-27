@@ -1,5 +1,6 @@
 <?php
 
+use App\Entity\Product;
 use ForestAdmin\AgentPHP\Agent\Builder\CollectionBuilder;
 use ForestAdmin\AgentPHP\DatasourceDoctrine\DoctrineDatasource;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Query\ConditionTree\Operators;
@@ -42,8 +43,18 @@ return static function (ForestAgent $forestAgent) {
                                 ['field' => 'name', 'operator' => Operators::CONTAINS, 'value' => $search],
                                 ['field' => 'email', 'operator' => Operators::CONTAINS, 'value' => $search],
                             ],
-                        ]
+                        ],
                     ],
+                ]
+            );
+        })
+        ->customizeCollection(class_basename(Product::class), function (CollectionBuilder $builder) {
+            $builder->addSegment(
+                'highPrice',
+                fn () => [
+                    'field'    => 'price',
+                    'operator' => Operators::GREATER_THAN,
+                    'value'    => 750,
                 ]
             );
         })
