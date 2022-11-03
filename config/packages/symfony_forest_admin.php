@@ -29,7 +29,14 @@ return static function (ForestAgent $forestAgent) {
                     ['model'],
                     fn ($records) => collect($records)->map(fn ($record) => $record['model'] . ' : BP-' . rand(100, 1000) . '-WY')
                 )
-            );
+            )
+                ->replaceFieldSorting('model', null)
+                ->replaceFieldSorting(
+                    'registrationNumber',
+                    [
+                      ['field' => 'model', 'ascending' => true]
+                    ]
+                );
         })
         ->customizeCollection(class_basename(User::class), function (CollectionBuilder $builder) {
             $builder->replaceSearch(
