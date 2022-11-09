@@ -2,13 +2,13 @@
 
 use App\Entity\Product;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\CollectionCustomizer;
+use ForestAdmin\AgentPHP\DatasourceCustomizer\Decorators\Computed\ComputedDefinition;
 use ForestAdmin\AgentPHP\DatasourceDoctrine\DoctrineDatasource;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Query\ConditionTree\Operators;
-use ForestAdmin\AgentPHP\DatasourceToolkit\Decorators\Computed\ComputedDefinition;
 use ForestAdmin\SymfonyForestAdmin\Service\ForestAgent;
 
 return static function (ForestAgent $forestAgent) {
-    $forestAgent->agent->addDatasource(new DoctrineDatasource($forestAgent->getEntityManager()))
+    $forestAgent->agent->addDatasource(new DoctrineDatasource($forestAgent->getEntityManager()), ['exclude' => ['DriverLicence']])
         ->addDatasource(new ForestAdmin\AgentPHP\DatasourceDummy\DummyDatasource())
         ->customizeCollection(
             'Book',
