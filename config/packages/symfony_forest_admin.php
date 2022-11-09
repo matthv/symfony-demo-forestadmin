@@ -1,7 +1,7 @@
 <?php
 
 use App\Entity\Product;
-use ForestAdmin\AgentPHP\Agent\Builder\CollectionBuilder;
+use ForestAdmin\AgentPHP\DatasourceCustomizer\CollectionCustomizer;
 use ForestAdmin\AgentPHP\DatasourceDoctrine\DoctrineDatasource;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Query\ConditionTree\Operators;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Decorators\Computed\ComputedDefinition;
@@ -12,7 +12,7 @@ return static function (ForestAgent $forestAgent) {
         ->addDatasource(new ForestAdmin\AgentPHP\DatasourceDummy\DummyDatasource())
         ->customizeCollection(
             'Book',
-            fn (CollectionBuilder $builder) => $builder->addField(
+            fn (CollectionCustomizer $builder) => $builder->addField(
                 'toto',
                 new ComputedDefinition(
                     columnType: 'String',
@@ -21,7 +21,7 @@ return static function (ForestAgent $forestAgent) {
                 )
             )
         )
-        ->customizeCollection('Car', function (CollectionBuilder $builder) {
+        ->customizeCollection('Car', function (CollectionCustomizer $builder) {
             $builder->addField(
                 'registrationNumber',
                 new ComputedDefinition(
@@ -31,7 +31,7 @@ return static function (ForestAgent $forestAgent) {
                 )
             );
         })
-        ->customizeCollection(class_basename(User::class), function (CollectionBuilder $builder) {
+        ->customizeCollection(class_basename(User::class), function (CollectionCustomizer $builder) {
             $builder->replaceSearch(
                 fn ($search, $extended) => [
                     'aggregator' => 'And',
@@ -48,7 +48,7 @@ return static function (ForestAgent $forestAgent) {
                 ]
             );
         })
-        ->customizeCollection(class_basename(Product::class), function (CollectionBuilder $builder) {
+        ->customizeCollection(class_basename(Product::class), function (CollectionCustomizer $builder) {
             $builder->addSegment(
                 'highPrice',
                 fn () => [
