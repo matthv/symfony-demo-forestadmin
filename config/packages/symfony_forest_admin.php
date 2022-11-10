@@ -8,7 +8,7 @@ use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Query\ConditionTree\Operat
 use ForestAdmin\SymfonyForestAdmin\Service\ForestAgent;
 
 return static function (ForestAgent $forestAgent) {
-    $forestAgent->agent->addDatasource(new DoctrineDatasource($forestAgent->getEntityManager()), ['exclude' => ['DriverLicence']])
+    $forestAgent->agent->addDatasource(new DoctrineDatasource($forestAgent->getEntityManager()), ['exclude' => ['DriverLicence'], 'rename' => ['Product' => 'Package']])
         ->addDatasource(new ForestAdmin\AgentPHP\DatasourceDummy\DummyDatasource())
         ->customizeCollection(
             'Book',
@@ -55,7 +55,7 @@ return static function (ForestAgent $forestAgent) {
                 ]
             );
         })
-        ->customizeCollection(class_basename(Product::class), function (CollectionCustomizer $builder) {
+        ->customizeCollection('Package', function (CollectionCustomizer $builder) {
             $builder->addSegment(
                 'highPrice',
                 fn () => [
