@@ -1,6 +1,7 @@
 <?php
 
 use App\Entity\Product;
+use ForestAdmin\AgentPHP\Agent\Utils\Env;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\CollectionCustomizer;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\Decorators\Computed\ComputedDefinition;
 use ForestAdmin\AgentPHP\DatasourceDoctrine\DoctrineDatasource;
@@ -8,7 +9,23 @@ use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Query\ConditionTree\Operat
 use ForestAdmin\SymfonyForestAdmin\Service\ForestAgent;
 
 return static function (ForestAgent $forestAgent) {
-    $forestAgent->agent->addDatasource(new DoctrineDatasource($forestAgent->getEntityManager()), ['exclude' => ['DriverLicence'], 'rename' => ['Product' => 'Package']])
+    $forestAgent->agent->addDatasource(
+        new DoctrineDatasource(
+            $forestAgent->getEntityManager(),
+            [
+                'databaseDriver'   => Env::get('DATABASE_DRIVER'),
+                'databaseHost'     => Env::get('DATABASE_HOST'),
+                'databasePort'     => Env::get('DATABASE_PORT'),
+                'databaseName'     => Env::get('DATABASE_NAME'),
+                'databaseUsername' => Env::get('DATABASE_USERNAME'),
+                'databasePassword' => Env::get('DATABASE_PASSWORD'),
+            ]
+        ),
+        [
+            'include' => ['DriverLicence', 'Car', 'User', 'Product'],
+            'rename'  => ['Product' => 'Package']
+        ]
+    )
         ->addDatasource(new ForestAdmin\AgentPHP\DatasourceDummy\DummyDatasource())
         ->customizeCollection(
             'Book',
@@ -19,7 +36,7 @@ return static function (ForestAgent $forestAgent) {
                     dependencies: ["title", "author"],
                     values: fn ($records) => $records,
                 )
-            )
+            )->addManyToOneRelation('user', 'User', 'user_id', 'id')
         )
         ->customizeCollection('Car', function (CollectionCustomizer $builder) {
             $builder->addField(
@@ -53,7 +70,9 @@ return static function (ForestAgent $forestAgent) {
                         ],
                     ],
                 ]
-            );
+            )
+                ->addOneToManyRelation('books', 'Book', 'user_id')
+                ->addOneToOneRelation('myBook', 'Book', 'user_id');
         })
         ->customizeCollection('Package', function (CollectionCustomizer $builder) {
             $builder->addSegment(
