@@ -22,7 +22,7 @@ return static function (ForestAgent $forestAgent) {
             ]
         ),
         [
-            'include' => ['DriverLicence', 'Car', 'User', 'Product'],
+//            'include' => ['DriverLicence', 'Car', 'User', 'Product'],
             'rename'  => ['Product' => 'Package']
         ]
     )
@@ -53,6 +53,16 @@ return static function (ForestAgent $forestAgent) {
                     [
                       ['field' => 'model', 'ascending' => true]
                     ]
+                )
+                ->addManyToManyRelation(
+                    'myUsers',
+                    'User',
+                    'car_user',
+                    'CarUser',
+                    'car_id',
+                    'user_id',
+                    'id',
+                    'id',
                 );
         })
         ->customizeCollection(class_basename(User::class), function (CollectionCustomizer $builder) {
@@ -72,7 +82,17 @@ return static function (ForestAgent $forestAgent) {
                 ]
             )
                 ->addOneToManyRelation('books', 'Book', 'user_id')
-                ->addOneToOneRelation('myBook', 'Book', 'user_id');
+                ->addOneToOneRelation('myBook', 'Book', 'user_id')
+                ->addManyToManyRelation(
+                    'myCars',
+                    'Car',
+                    'car_user',
+                    'CarUser',
+                    'user_id',
+                    'car_id',
+                    'id',
+                    'id',
+                );
         })
         ->customizeCollection('Package', function (CollectionCustomizer $builder) {
             $builder->addSegment(
