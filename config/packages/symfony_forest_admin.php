@@ -1,6 +1,5 @@
 <?php
 
-use App\Entity\Product;
 use ForestAdmin\AgentPHP\Agent\Utils\Env;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\CollectionCustomizer;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\Decorators\Computed\ComputedDefinition;
@@ -13,17 +12,18 @@ return static function (ForestAgent $forestAgent) {
         new DoctrineDatasource(
             $forestAgent->getEntityManager(),
             [
-                'databaseDriver'   => Env::get('DATABASE_DRIVER'),
-                'databaseHost'     => Env::get('DATABASE_HOST'),
-                'databasePort'     => Env::get('DATABASE_PORT'),
-                'databaseName'     => Env::get('DATABASE_NAME'),
-                'databaseUsername' => Env::get('DATABASE_USERNAME'),
-                'databasePassword' => Env::get('DATABASE_PASSWORD'),
+                'url'      => Env::get('DATABASE_URL'),
+//                'driver'   => Env::get('DATABASE_DRIVER'),
+//                'host'     => Env::get('DATABASE_HOST'),
+//                'port'     => Env::get('DATABASE_PORT'),
+//                'database' => Env::get('DATABASE_NAME'),
+//                'username' => Env::get('DATABASE_USERNAME'),
+//                'password' => Env::get('DATABASE_PASSWORD'),
             ]
         ),
         [
 //            'include' => ['DriverLicence', 'Car', 'User', 'Product'],
-            'rename'  => ['Product' => 'Package']
+            'rename' => ['Product' => 'Package'],
         ]
     )
         ->addDatasource(new ForestAdmin\AgentPHP\DatasourceDummy\DummyDatasource())
@@ -51,7 +51,7 @@ return static function (ForestAgent $forestAgent) {
                 ->replaceFieldSorting(
                     'registrationNumber',
                     [
-                      ['field' => 'model', 'ascending' => true]
+                        ['field' => 'model', 'ascending' => true],
                     ]
                 )
                 ->addManyToManyRelation(
@@ -102,7 +102,15 @@ return static function (ForestAgent $forestAgent) {
                     'operator' => Operators::GREATER_THAN,
                     'value'    => 750,
                 ]
-            );
+            )
+                ->replaceFieldOperator('name',
+                    Operators::EQUAL,
+//                    fn ($value) => [
+//                        'field'    => 'name',
+//                        'operator' => Operators::IN,
+//                        'value'    => $value,
+//                    ]
+                );
         })
         ->build();
 };
