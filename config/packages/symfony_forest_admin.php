@@ -12,7 +12,9 @@ return static function (ForestAgent $forestAgent) {
         new DoctrineDatasource(
             $forestAgent->getEntityManager(),
             [
+                // solution 1
                 'url'      => Env::get('DATABASE_URL'),
+                // solution 2
 //                'driver'   => Env::get('DATABASE_DRIVER'),
 //                'host'     => Env::get('DATABASE_HOST'),
 //                'port'     => Env::get('DATABASE_PORT'),
@@ -94,23 +96,23 @@ return static function (ForestAgent $forestAgent) {
                     'id',
                 );
         })
-        ->customizeCollection('Package', function (CollectionCustomizer $builder) {
-            $builder->addSegment(
-                'highPrice',
-                fn () => [
-                    'field'    => 'price',
-                    'operator' => Operators::GREATER_THAN,
-                    'value'    => 750,
-                ]
-            )
-                ->replaceFieldOperator('name',
-                    Operators::EQUAL,
-//                    fn ($value) => [
-//                        'field'    => 'name',
-//                        'operator' => Operators::IN,
-//                        'value'    => $value,
-//                    ]
-                );
-        })
+//        ->customizeCollection('Package', function (CollectionCustomizer $builder) {
+//            $builder->addSegment(
+//                'highPrice',
+//                fn () => [
+//                    'field'    => 'price',
+//                    'operator' => Operators::GREATER_THAN,
+//                    'value'    => 750,
+//                ]
+//            )
+//                ->replaceFieldOperator('name',
+//                    Operators::EQUAL,
+////                    fn ($value) => [
+////                        'field'    => 'name',
+////                        'operator' => Operators::IN,
+////                        'value'    => $value,
+////                    ]
+//                );
+//        })
         ->build();
 };
