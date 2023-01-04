@@ -6,8 +6,14 @@ use ForestAdmin\AgentPHP\DatasourceCustomizer\Decorators\Computed\ComputedDefini
 use ForestAdmin\AgentPHP\DatasourceDoctrine\DoctrineDatasource;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Query\ConditionTree\Operators;
 use ForestAdmin\SymfonyForestAdmin\Service\ForestAgent;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 return static function (ForestAgent $forestAgent) {
+
+//    $logger = new Logger('forest-log');
+//    $logger->pushHandler(new StreamHandler(__DIR__ . '/../../var/log/forest.log'));
+
     $forestAgent->agent->addDatasource(
         new DoctrineDatasource(
             $forestAgent->getEntityManager(),
@@ -28,6 +34,7 @@ return static function (ForestAgent $forestAgent) {
             'rename' => ['Product' => 'Package'],
         ]
     )
+//        ->setLogger($logger)
         ->addDatasource(new ForestAdmin\AgentPHP\DatasourceDummy\DummyDatasource())
         ->customizeCollection(
             'Book',
