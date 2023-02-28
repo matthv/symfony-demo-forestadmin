@@ -2,6 +2,7 @@
 
 use ForestAdmin\AgentPHP\Agent\Utils\Env;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\CollectionCustomizer;
+use ForestAdmin\AgentPHP\DatasourceCustomizer\Decorators\Actions\Types\BaseAction;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\Decorators\Computed\ComputedDefinition;
 use ForestAdmin\AgentPHP\DatasourceDoctrine\DoctrineDatasource;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Query\ConditionTree\Operators;
@@ -21,17 +22,17 @@ return static function (ForestAgent $forestAgent) {
                 // solution 1
                 'url'      => Env::get('DATABASE_URL'),
                 // solution 2
-//                'driver'   => Env::get('DATABASE_DRIVER'),
-//                'host'     => Env::get('DATABASE_HOST'),
-//                'port'     => Env::get('DATABASE_PORT'),
-//                'database' => Env::get('DATABASE_NAME'),
-//                'username' => Env::get('DATABASE_USERNAME'),
-//                'password' => Env::get('DATABASE_PASSWORD'),
+                //                'driver'   => Env::get('DATABASE_DRIVER'),
+                //                'host'     => Env::get('DATABASE_HOST'),
+                //                'port'     => Env::get('DATABASE_PORT'),
+                //                'database' => Env::get('DATABASE_NAME'),
+                //                'username' => Env::get('DATABASE_USERNAME'),
+                //                'password' => Env::get('DATABASE_PASSWORD'),
             ]
         ),
         [
 //            'include' => ['DriverLicence', 'Car', 'User', 'Product'],
-            'rename' => ['Product' => 'Package'],
+'rename' => ['Product' => 'Package'],
         ]
     )
 //        ->setLogger($logger)
@@ -101,8 +102,23 @@ return static function (ForestAgent $forestAgent) {
                     'car_id',
                     'id',
                     'id',
+                )
+                ->addAction(
+                    'Mark as live',
+                    new BaseAction(
+                        'SINGLE',
+                        fn ($context, $responseBuilder) => $responseBuilder->success()
+                    )
+                )
+                ->addAction(
+                    'Action file',
+                    new BaseAction(
+                        'SINGLE',
+                        fn ($context, $responseBuilder) => $responseBuilder->file(file_get_contents('../test.txt'), 'filedemo', 'text/plain')
+                    )
                 );
         })
+
 //        ->customizeCollection('Package', function (CollectionCustomizer $builder) {
 //            $builder->addSegment(
 //                'highPrice',
@@ -123,3 +139,4 @@ return static function (ForestAgent $forestAgent) {
 //        })
         ->build();
 };
+
