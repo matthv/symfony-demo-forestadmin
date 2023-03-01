@@ -1,14 +1,14 @@
 <?php
 
+require 'Actions.php';
+require 'Relations.php';
+
 use ForestAdmin\AgentPHP\Agent\Utils\Env;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\CollectionCustomizer;
-use ForestAdmin\AgentPHP\DatasourceCustomizer\Decorators\Actions\Types\BaseAction;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\Decorators\Computed\ComputedDefinition;
 use ForestAdmin\AgentPHP\DatasourceDoctrine\DoctrineDatasource;
 use ForestAdmin\AgentPHP\DatasourceToolkit\Components\Query\ConditionTree\Operators;
 use ForestAdmin\SymfonyForestAdmin\Service\ForestAgent;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 return static function (ForestAgent $forestAgent) {
 
@@ -16,9 +16,7 @@ return static function (ForestAgent $forestAgent) {
 //    $logger->pushHandler(new StreamHandler(__DIR__ . '/../../var/log/forest.log'));
 
     $forestAgent->agent->addDatasource(
-        new DoctrineDatasource(
-            $forestAgent->getEntityManager(),
-            [
+        new DoctrineDatasource($forestAgent->getEntityManager(), [
                 // solution 1
                 'url'      => Env::get('DATABASE_URL'),
                 // solution 2
@@ -28,14 +26,13 @@ return static function (ForestAgent $forestAgent) {
                 //                'database' => Env::get('DATABASE_NAME'),
                 //                'username' => Env::get('DATABASE_USERNAME'),
                 //                'password' => Env::get('DATABASE_PASSWORD'),
-            ]
-        ),
+            ]),
         [
-//            'include' => ['DriverLicence', 'Car', 'User', 'Product'],
-'rename' => ['Product' => 'Package'],
+            //'include' => ['DriverLicence', 'Car', 'User', 'Product'],
+            'rename' => ['Product' => 'Package'],
         ]
     )
-//        ->setLogger($logger)
+       //->setLogger($logger)
         ->addDatasource(new ForestAdmin\AgentPHP\DatasourceDummy\DummyDatasource())
         ->customizeCollection(
             'Book',
@@ -46,7 +43,7 @@ return static function (ForestAgent $forestAgent) {
                     dependencies: ["title", "author"],
                     values: fn ($records) => $records,
                 )
-            )->addManyToOneRelation('user', 'User', 'user_id', 'id')
+            )
         )
         ->customizeCollection('Car', function (CollectionCustomizer $builder) {
             $builder->addField(
@@ -63,16 +60,6 @@ return static function (ForestAgent $forestAgent) {
                     [
                         ['field' => 'model', 'ascending' => true],
                     ]
-                )
-                ->addManyToManyRelation(
-                    'myUsers',
-                    'User',
-                    'car_user',
-                    'CarUser',
-                    'car_id',
-                    'user_id',
-                    'id',
-                    'id',
                 );
         })
         ->customizeCollection(class_basename(User::class), function (CollectionCustomizer $builder) {
@@ -90,34 +77,13 @@ return static function (ForestAgent $forestAgent) {
                         ],
                     ],
                 ]
-            )
-                ->addOneToManyRelation('books', 'Book', 'user_id')
-                ->addOneToOneRelation('myBook', 'Book', 'user_id')
-                ->addManyToManyRelation(
-                    'myCars',
-                    'Car',
-                    'car_user',
-                    'CarUser',
-                    'user_id',
-                    'car_id',
-                    'id',
-                    'id',
-                )
-                ->addAction(
-                    'Mark as live',
-                    new BaseAction(
-                        'SINGLE',
-                        fn ($context, $responseBuilder) => $responseBuilder->success()
-                    )
-                )
-                ->addAction(
-                    'Action file',
-                    new BaseAction(
-                        'SINGLE',
-                        fn ($context, $responseBuilder) => $responseBuilder->file(file_get_contents('../test.txt'), 'filedemo', 'text/plain')
-                    )
-                );
-        })
+            );
+        });
+
+    $forestAgent = addActions($forestAgent);
+    $forestAgent = addRelations($forestAgent);
+
+    $forestAgent->agent->build();
 
 //        ->customizeCollection('Package', function (CollectionCustomizer $builder) {
 //            $builder->addSegment(
@@ -137,6 +103,6 @@ return static function (ForestAgent $forestAgent) {
 ////                    ]
 //                );
 //        })
-        ->build();
+
 };
 
