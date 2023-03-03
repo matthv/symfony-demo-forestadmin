@@ -64,32 +64,32 @@ if (! function_exists('addActions')) {
                             fn ($context, $responseBuilder) => $responseBuilder->redirectTo('https://www.google.com/maps/place/Le+Bois+Bernard,+36350+Luant/@46.7417455,1.5475855,17z')
                         )
                     )
-//                    ->addAction(
-//                        'Basic form',
-//                        new BaseAction(
-//                            scope: 'SINGLE',
-//                            execute: fn($context, $responseBuilder) => $responseBuilder->success('BRAVO !!!!'),
-//                            form: [
-//                                new DynamicField(type: FieldType::NUMBER, label: 'amount'),
-//                                new DynamicField(type: FieldType::STRING, label: 'description', isRequired: true),
-//                                new DynamicField(
-//                                    type: FieldType::STRING,
-//                                    label: 'salveta',
-//                                    description: 'elle a mis le sud en bouteille pas le sel!',
-//                                    isReadOnly: true,
-//                                    value: 'elle a mis le sud en bouteille pas le sel!'
-//                                )
-//                            ]
-//                        )
-//                    )
+                    ->addAction(
+                        'Basic form',
+                        new BaseAction(
+                            scope: 'SINGLE',
+                            execute: fn($context, $responseBuilder) => $responseBuilder->success('BRAVO !!!!'),
+                            form: [
+                                new DynamicField(type: FieldType::NUMBER, label: 'amount'),
+                                new DynamicField(type: FieldType::STRING, label: 'description', isRequired: true),
+                                new DynamicField(
+                                    type: FieldType::STRING,
+                                    label: 'salveta',
+                                    description: 'elle a mis le sud en bouteille pas le sel!',
+                                    isReadOnly: true,
+                                    value: 'elle a mis le sud en bouteille pas le sel!'
+                                )
+                            ]
+                        )
+                    )
                     ->addAction(
                         'Load form',
                         new BaseAction(
                             scope: 'SINGLE',
                             execute: fn($context, $responseBuilder) => $responseBuilder->success('BRAVO !!!!'),
                             form: [
-//                                new DynamicField(type: FieldType::NUMBER, label: 'amount'),
-//                                new DynamicField(type: FieldType::STRING, label: 'description', isRequired: true),
+                                new DynamicField(type: FieldType::NUMBER, label: 'amount'),
+                                new DynamicField(type: FieldType::STRING, label: 'description', isRequired: true),
                                 new DynamicField(
                                     type: FieldType::STRING,
                                     label: 'salveta',
@@ -99,7 +99,27 @@ if (! function_exists('addActions')) {
                                 )
                             ]
                         )
+                    )
+                    ->addAction(
+                        'Change form',
+                        new BaseAction(
+                            scope: 'SINGLE',
+                            execute: fn($context, $responseBuilder) => $responseBuilder->success('BRAVO !!!!'),
+                            form: [
+                                new DynamicField(type: FieldType::NUMBER, label: 'amount'),
+                                new DynamicField(type: FieldType::STRING, label: 'description', isRequired: true),
+                                new DynamicField(
+                                    type: FieldType::STRING,
+                                    label: 'amount X10',
+                                    isReadOnly: true,
+                                    value: function ($context) {
+                                        return $context->getFormValue('amount') * 10;
+                                    }
+                                )
+                            ]
+                        )
                     );
+
             });
 
         return $forestAgent;
