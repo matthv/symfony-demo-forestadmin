@@ -118,11 +118,24 @@ if (! function_exists('addActions')) {
                                 )
                             ]
                         )
+                    )
+                    ->addAction(
+                        'Leave a review',
+                        new BaseAction(
+                            scope: 'SINGLE',
+                            execute: fn($context, $responseBuilder) => $responseBuilder->success('Thank you for your review!'),
+                            form: [
+                                new DynamicField(type: FieldType::ENUM, label: 'Rating', enumValues: [1,2,3,4,5]),
+                                new DynamicField(
+                                    type: FieldType::STRING,
+                                    label: 'Put a comment',
+                                    if: fn ($context) => $context->getFormValue('Rating') !== null && $context->getFormValue('Rating') < 4
+                                )
+                            ],
+                        )
                     );
-
             });
 
         return $forestAgent;
     }
 }
-
