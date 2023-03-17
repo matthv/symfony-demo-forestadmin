@@ -60,14 +60,19 @@ return static function (ForestAgent $forestAgent) {
                     [
                         ['field' => 'model', 'ascending' => true],
                     ]
-                );
+                )
+//                ->addFieldValidation('nb_seats', Operators::PRESENT)
+//                ->addFieldValidation('nb_seats', Operators::PRESENT)
+//                ->addFieldValidation('nb_seats', Operators::GREATER_THAN, 4)
+                ->addFieldValidation('nb_seats', Operators::IN, [4,5,6])
+                ->disableCount();
         })
         ->customizeCollection(class_basename(User::class), function (CollectionCustomizer $builder) {
             $builder->replaceSearch(
                 fn ($search, $extended) => [
                     'aggregator' => 'And',
                     'conditions' => [
-                        ['field' => 'rememberToken', 'operator' => Operators::EQUAL, 'value' => 1],
+                        ['field' => 'remember_token', 'operator' => Operators::EQUAL, 'value' => 1],
                         [
                             'aggregator' => 'Or',
                             'conditions' => [
