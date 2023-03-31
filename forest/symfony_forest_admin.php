@@ -2,6 +2,7 @@
 
 require 'Actions.php';
 require 'Relations.php';
+require 'Charts.php';
 
 use ForestAdmin\AgentPHP\Agent\Utils\Env;
 use ForestAdmin\AgentPHP\DatasourceCustomizer\CollectionCustomizer;
@@ -87,6 +88,7 @@ return static function (ForestAgent $forestAgent) {
 
     $forestAgent = addActions($forestAgent);
     $forestAgent = addRelations($forestAgent);
+    $forestAgent = addCharts($forestAgent);
 
     $forestAgent->agent->build();
 
